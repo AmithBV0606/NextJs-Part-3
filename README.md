@@ -17,7 +17,7 @@
 
 ### Route Handlers : 
 
-- Previously we've learned how to route to pages with the file based routinng system.
+- Previously we've learned how to route to pages with the file based routing system.
 
 - The app router lets you create custom request handlers for your requests using a feature called Route Handlers.
 
@@ -90,5 +90,24 @@ export async function GET(
   const { id } = await params;
   const comment = comments.find((comment) => comment.id === parseInt(id));
   return Response.json(comment);
+}
+```
+
+### PATCH Request : 
+
+```js
+import { comments } from "../data";
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const body = await request.json();
+  const { text } = body;
+
+  const index = comments.findIndex((comment) => comment.id === parseInt(id));
+  comments[index].text = text;
+  return Response.json(comments[index]);
 }
 ```
