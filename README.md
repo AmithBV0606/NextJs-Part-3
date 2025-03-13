@@ -38,3 +38,14 @@
 - If an unsupported method is called, Next.js will return 405 method not allowed response.
 
 **Summary :** Route handlers allows you to create custom request handlers for a given routes. They're defined in a `route.js`/`route.ts` file inside the app directory. The `route.ts` file at the same route segment level as `page.tsx` will result in a conflict and the page will not be served. The route handler will handle the requests.
+
+### GET Request : 
+
+```js
+// comments/route.ts
+import { comments } from "./data";
+
+export async function GET() {
+  return Response.json(comments);
+}
+```
