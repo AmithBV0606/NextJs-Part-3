@@ -69,3 +69,26 @@ export async function POST(request: Request) {
   });
 }
 ```
+
+### Dynamic Route Handlers : 
+
+- Just like dynamic app routing, we also have dynamic route handlers.
+
+- The dynamic route handlers are the methods written inside `route.ts`, within the folders wrapped with square brackets `[]`.
+
+- Now we have to retrieve a single commnet based on the id provided.
+
+```js
+// comments/[id]/route.ts
+
+import { comments } from "../data";
+
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const comment = comments.find((comment) => comment.id === parseInt(id));
+  return Response.json(comment);
+}
+```
