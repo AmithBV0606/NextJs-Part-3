@@ -208,6 +208,7 @@ export async function GET() {
   - `Content-Type` : Header which indicates the media type of the response. It tells the client what the data type of the returned content is, such as text/html for HTML documents, application/json for JSON data, etc.
 
 ```js
+// profile/api/route.ts
 import { headers } from "next/headers";
 
 export async function GET() {
@@ -220,3 +221,95 @@ export async function GET() {
 ```
 
 **NOTE :** To set the Headers we need to return a new Response with custom headers.
+
+### Cookies in Route Handlers : 
+
+- Cookies are small pieces of data that a server sends to a user's web browser.
+
+- The browser can store the cookies and send them back to the same server with future requests.
+
+- Cookies serve three main purposes:
+
+  1. Managing sessions (like user logins and shopping carts)
+  2. Handling personalization (such as user preferences and themes)
+  3. Tracking (like recording and analyzing user behavior)
+
+#### Setting and Getting cookies inside a route handler : 
+
+**Approach 1 :**
+
+- Setting a cookie by returning a new response with the `set-cookie` header.
+
+```js
+// profile/api/route.ts
+import { headers } from "next/headers";
+
+export async function GET() {
+  const headersList = await headers();
+  console.log(headersList.get("Authorization"));
+  return new Response("<h1>Profile API data!!!</h1>", {
+    headers: { 
+      "content-Type": "text/html", 
+      "Set-Cookie": "theme=dark", 
+    },
+  });
+}
+```
+
+- Getting a cookie using the `get` method.
+
+```js
+// profile/api/route.ts
+import { NextRequest } from "next/server";
+
+export async function GET(request: NextRequest) {
+  // To get the cookie
+  const cookie = request.cookies.get("theme");
+  console.log(cookie);
+
+  return new Response("<h1>Profile API data!!!</h1>", {
+    headers: { 
+      "content-Type": "text/html"
+    },
+  });
+}
+```
+
+**Approach 2 :**
+
+- Setting the cookies using Built-in cookies function.
+
+```js
+// profile/api/route.ts
+import { headers, cookies } from "next/headers";
+
+export async function GET() {
+  // To set the cookie using the built-in function
+  const cookieStore = await cookies();
+  cookieStore.set("resultsPerPage", "20");
+
+  return new Response("<h1>Profile API data!!!</h1>", {
+    headers: { 
+      "content-Type": "text/html",
+    },
+  });
+}
+```
+
+- Getting the cookies using Built-in cookies function.
+
+```js
+// profile/api/route.ts
+import { headers, cookies } from "next/headers";
+
+export async function GET() {
+  // To get the cookie using the built-in function
+  console.log(cookieStore.get("resultsPerPage"));
+
+  return new Response("<h1>Profile API data!!!</h1>", {
+    headers: { 
+      "content-Type": "text/html
+    },
+  });
+}
+```
