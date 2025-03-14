@@ -1,4 +1,4 @@
-# Next-Js by Codevolution : Part-2
+# Next-Js by Codevolution : Part-3
 
 ### Topics Covered :
 
@@ -334,7 +334,7 @@ export async function GET() {
 }
 ```
 
-### Caching in Route Handlers : 
+## Caching in Route Handlers : 
 
 - Route handlers are not cached by default but you can opt into caching when using the GET method.
 
@@ -377,5 +377,68 @@ export async function GET() {
   return Response.json({
     time: new Date().toLocaleTimeString(),
   });
+}
+```
+
+## Middleware :
+
+- Middlewares in Next.js is a powerfull feature that lets you intercept and control the flow of requests and responses throughout your application.
+
+- It does that at a global level, significantly enhancing features like redirects, URL rewrites, authentication, headers, cookies and more.
+
+- Middleware lets you specify paths where it should be active
+
+1. **Custom matcher config** :
+```js
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+// This function can be marked `async` if using `await` inside
+export function middleware(request: NextRequest) {
+  return NextResponse.redirect(new URL('/', request.url));
+}
+
+// See "Matching Paths" below to learn more
+export const config = {
+  matcher: "/profile",
+};
+```
+
+2. **Conditional statements** :
+
+```js
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function middleware(request: NextRequest) {
+
+  // Conditional statements
+  if (request.nextUrl.pathname.startsWith("/profile")) {
+    return NextResponse.redirect(new URL("/hello", request.url));
+    // return NextResponse.rewrite(new URL("/hello", request.url));
+  }
+}
+```
+
+**NOTE :** `rewrite` method keeps the URL in the browser unchanged, while serving different content.
+
+#### Cookies and headers in middleware : 
+
+```js
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function middleware(request: NextRequest) {
+  // Using cookies in middleware
+  const response = NextResponse.next();
+  const themePreference = request.cookies.get("theme");
+  if (!themePreference) {
+    response.cookies.set("theme", "dark")
+  }
+  
+  // Using headers in middleware
+  response.headers.set("custom-header", "custom-value");
+  
+  return response;
 }
 ```

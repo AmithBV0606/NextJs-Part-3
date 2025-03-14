@@ -1,5 +1,5 @@
 // A scenario where we do need caching.
-export const dynamic = "force-static";
+// export const dynamic = "force-static";
 
 export async function GET() {
   const categories = [
