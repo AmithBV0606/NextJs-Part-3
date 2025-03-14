@@ -323,3 +323,59 @@ export async function GET() {
 - After few months you've built a more comprehensive `v2` endpoint that includes structured names, user preferences and profile inframtion.
 
 - To move clients to this new endpoint i.e `v2`, we can use redirect url in `v1` endpoint.
+
+```js
+// api/v1/users/route.ts
+
+import { redirect } from "next/navigation";
+
+export async function GET() {
+  redirect("/api/v2/users");
+}
+```
+
+### Caching in Route Handlers : 
+
+- Route handlers are not cached by default but you can opt into caching when using the GET method.
+
+- Caching only works with `GET` method.
+
+- Other HTTP methods like POST, PUT, or DELETE are never cached.
+
+- If you're using dynamic functions like headers() and cookies(), or working with the request object in your GET method, caching won't be applied.
+
+- The request is cached using `export const dynamic = "force-static";`
+
+```js
+// time/route.ts
+
+export const dynamic = "force-static";
+// This line ensures that the response is cached and served instantly to all users.
+
+export async function GET() {
+  return Response.json({
+    time: new Date().toLocaleTimeString(),
+  });
+}
+```
+
+- There will be no caching while development. So to test the caching we need to build the app and start the production server.
+
+- Once the app is built, the cache will only be revalidated after the next production build.
+
+- But what if we want to update our data without re-building our entire app?
+
+- If you want to revalidate the cache after every specified time duration, we need the the revalidation time(in seconds).
+
+```js
+// time/route.ts
+
+export const dynamic = "force-static";
+export const revalidate = 10;
+
+export async function GET() {
+  return Response.json({
+    time: new Date().toLocaleTimeString(),
+  });
+}
+```
