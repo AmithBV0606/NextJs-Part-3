@@ -154,3 +154,69 @@ export async function GET(request: NextRequest) {
   return Response.json(filteredComments);
 }
 ```
+
+### Headers in Route Handlers : 
+
+- HTTP headers represent the metadata associated with an API request and response.
+
+- The Headers can be classified into 2 main categories :
+
+1. **Request Headers** :
+
+- These are sent by the client, such as a web browser, to the server. 
+
+- They contain essential information about the request, which helps the server understand and process it correctly.
+
+  - `User-Agent` : Identifies the browser and operating system to the server.
+  - `Accept` : Indicates the content types like text, video, or image formats that the client can process.
+  - `Authorization` : Header used by the client to authenticate itself to the server.
+
+**In Next.js, we can receive the Header in 2 ways :**
+
+Way 1 :
+
+```ts
+// profile/api/route.ts
+import { NextRequest } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  console.log(requestHeaders.get("Authorization"));
+  return new Response("Profile API data!!!");
+}
+```
+
+Way 2 : 
+
+```ts
+// profile/api/route.ts
+import { headers } from "next/headers";
+
+export async function GET() {
+  const headersList = await headers();
+  console.log(headersList.get("Authorization"));
+  return new Response("Profile API data!!!");
+}
+```
+
+2. **Response Headers** :
+
+- These are sent back from the server to the client. 
+
+- They provide information about the server and the data being sent in the response.
+
+  - `Content-Type` : Header which indicates the media type of the response. It tells the client what the data type of the returned content is, such as text/html for HTML documents, application/json for JSON data, etc.
+
+```js
+import { headers } from "next/headers";
+
+export async function GET() {
+  const headersList = await headers();
+  console.log(headersList.get("Authorization"));
+  return new Response("<h1>Profile API data!!!</h1>", {
+    headers: { "content-Type" : "text/html" }
+  });
+}
+```
+
+**NOTE :** To set the Headers we need to return a new Response with custom headers.
