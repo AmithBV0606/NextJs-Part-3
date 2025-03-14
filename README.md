@@ -15,7 +15,7 @@
 - Caching in Route Handlers
 - Middleware
 
-### Route Handlers : 
+## Route Handlers : 
 
 - Previously we've learned how to route to pages with the file based routing system.
 
@@ -45,7 +45,7 @@
 
 **Summary :** Route handlers allows you to create custom request handlers for a given routes. They're defined in a `route.js`/`route.ts` file inside the app directory. The `route.ts` file at the same route segment level as `page.tsx` will result in a conflict and the page will not be served. The route handler will handle the requests.
 
-### GET Request : 
+## GET Request : 
 
 ```js
 // comments/route.ts
@@ -56,7 +56,7 @@ export async function GET() {
 }
 ```
 
-### POST Request :
+## POST Request :
 
 ```js
 // comments/route.ts
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
 }
 ```
 
-### Dynamic Route Handlers : 
+## Dynamic Route Handlers : 
 
 - Just like dynamic app routing, we also have dynamic route handlers.
 
@@ -99,7 +99,7 @@ export async function GET(
 }
 ```
 
-### PATCH Request : 
+## PATCH Request : 
 
 - PATCH request lets us make partial modification to a resource.
 
@@ -120,7 +120,7 @@ export async function PATCH(
 }
 ```
 
-### DELETE Request : 
+## DELETE Request : 
 
 ```js
 export async function DELETE(
@@ -135,7 +135,7 @@ export async function DELETE(
 }
 ```
 
-### URL Query Parameters : 
+## URL Query Parameters : 
 
 ```js
 // comments/route.ts
@@ -155,7 +155,7 @@ export async function GET(request: NextRequest) {
 }
 ```
 
-### Headers in Route Handlers : 
+## Headers in Route Handlers : 
 
 - HTTP headers represent the metadata associated with an API request and response.
 
@@ -222,7 +222,7 @@ export async function GET() {
 
 **NOTE :** To set the Headers we need to return a new Response with custom headers.
 
-### Cookies in Route Handlers : 
+## Cookies in Route Handlers : 
 
 - Cookies are small pieces of data that a server sends to a user's web browser.
 
@@ -313,3 +313,13 @@ export async function GET() {
   });
 }
 ```
+
+## Redirects in Route Handlers : 
+
+- Imagine you've built an user's API, that's been running for a while.
+
+- Your `v1` endpoint has basic user information like id, email, full name and createdAt.
+
+- After few months you've built a more comprehensive `v2` endpoint that includes structured names, user preferences and profile inframtion.
+
+- To move clients to this new endpoint i.e `v2`, we can use redirect url in `v1` endpoint.
