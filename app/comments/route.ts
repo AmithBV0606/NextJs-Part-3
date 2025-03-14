@@ -5,10 +5,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const comment = await request.json();
+  const body = await request.json();
   const newComment = {
     id: comments.length + 1,
-    text: comment.text,
+    text: body.text,
   };
   comments.push(newComment);
   return new Response(JSON.stringify(newComment), {

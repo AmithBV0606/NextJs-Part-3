@@ -37,6 +37,12 @@
 
 - If an unsupported method is called, Next.js will return 405 method not allowed response.
 
+**NOTE :** 
+
+1. Just like page routes, route handlers must live in the app folder.
+2. Watchout for conflicts between `route.ts` and `page.tsx`. Both these files cannot be in the same folder. If it is, the `route.ts` will be the one to get the preference and takeover the `page.tsx` by default.
+3. The solution for this is to move the `route.ts` file to the API sub directory.
+
 **Summary :** Route handlers allows you to create custom request handlers for a given routes. They're defined in a `route.js`/`route.ts` file inside the app directory. The `route.ts` file at the same route segment level as `page.tsx` will result in a conflict and the page will not be served. The route handler will handle the requests.
 
 ### GET Request : 
@@ -95,6 +101,8 @@ export async function GET(
 
 ### PATCH Request : 
 
+- PATCH request lets us make partial modification to a resource.
+
 ```js
 import { comments } from "../data";
 
@@ -109,5 +117,20 @@ export async function PATCH(
   const index = comments.findIndex((comment) => comment.id === parseInt(id));
   comments[index].text = text;
   return Response.json(comments[index]);
+}
+```
+
+### DELETE Request : 
+
+```js
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const index = comments.findIndex((comment) => comment.id === parseInt(id));
+  const deletedComment = comments[index];
+  comments.splice(index, 1);
+  return Response.json(deletedComment);
 }
 ```
