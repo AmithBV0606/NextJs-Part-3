@@ -134,3 +134,23 @@ export async function DELETE(
   return Response.json(deletedComment);
 }
 ```
+
+### URL Query Parameters : 
+
+```js
+// comments/route.ts
+
+import { NextRequest } from "next/server";
+import { comments } from "./data";
+
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  // console.log(searchParams);
+  const query = searchParams.get("query");
+  // console.log(query);
+  const filteredComments = query
+    ? comments.filter((comment) => comment.text.includes(query))
+    : comments;
+  return Response.json(filteredComments);
+}
+```
